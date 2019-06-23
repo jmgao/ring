@@ -12,7 +12,7 @@
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use crate::{ec, error, rand};
+use crate::{ec, error};
 
 /// A key agreement algorithm.
 macro_rules! suite_b_curve {
@@ -37,7 +37,10 @@ macro_rules! suite_b_curve {
             elem_scalar_seed_len: ($bits + 7) / 8,
             id: $id,
             check_private_key_bytes: $check_private_key_bytes,
+
+            #[cfg(feature = "rand")]
             generate_private_key: $generate_private_key,
+
             public_from_private: $public_from_private,
         };
 
@@ -46,8 +49,9 @@ macro_rules! suite_b_curve {
             ec::suite_b::private_key::check_scalar_big_endian_bytes($private_key_ops, bytes)
         }
 
+        #[cfg(feature = "rand")]
         fn $generate_private_key(
-            rng: &dyn rand::SecureRandom,
+            rng: &dyn crate::rand::SecureRandom,
             out: &mut [u8],
         ) -> Result<(), error::Unspecified> {
             ec::suite_b::private_key::generate_private_scalar_bytes($private_key_ops, rng, out)

@@ -15,7 +15,7 @@
 //! X25519 Key agreement.
 
 use super::ops;
-use crate::{agreement, constant_time, cpu, ec, error, polyfill::convert::*, rand};
+use crate::{agreement, constant_time, cpu, ec, error, polyfill::convert::*};
 use untrusted;
 
 static CURVE25519: ec::Curve = ec::Curve {
@@ -23,7 +23,10 @@ static CURVE25519: ec::Curve = ec::Curve {
     elem_scalar_seed_len: ELEM_AND_SCALAR_LEN,
     id: ec::CurveID::Curve25519,
     check_private_key_bytes: x25519_check_private_key_bytes,
+
+    #[cfg(feature = "rand")]
     generate_private_key: x25519_generate_private_key,
+
     public_from_private: x25519_public_from_private,
 };
 
@@ -45,8 +48,9 @@ fn x25519_check_private_key_bytes(bytes: &[u8]) -> Result<(), error::Unspecified
     Ok(())
 }
 
+#[cfg(feature = "rand")]
 fn x25519_generate_private_key(
-    rng: &dyn rand::SecureRandom,
+    rng: &dyn crate::rand::SecureRandom,
     out: &mut [u8],
 ) -> Result<(), error::Unspecified> {
     rng.fill(out)

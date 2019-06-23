@@ -15,14 +15,7 @@
 //! EdDSA Signatures.
 
 use super::{super::ops::*, ED25519_PUBLIC_KEY_LEN};
-use crate::{
-    digest, error,
-    io::der,
-    pkcs8,
-    polyfill::convert::*,
-    rand,
-    signature::{self, KeyPair as SigningKeyPair},
-};
+use crate::{digest, error, io::der, pkcs8, polyfill::convert::*, signature};
 use untrusted;
 
 use super::digest::*;
@@ -50,9 +43,12 @@ impl Ed25519KeyPair {
     /// https://tools.ietf.org/html/draft-ietf-curdle-pkix-04.
     ///
     /// [RFC 5958 Section 2]: https://tools.ietf.org/html/rfc5958#section-2
+    #[cfg(feature = "rand")]
     pub fn generate_pkcs8(
-        rng: &dyn rand::SecureRandom,
+        rng: &dyn crate::rand::SecureRandom,
     ) -> Result<pkcs8::Document, error::Unspecified> {
+        use crate::signature::KeyPair;
+
         let mut seed = [0u8; SEED_LEN];
         rng.fill(&mut seed)?;
         let key_pair = Self::from_seed_(&seed);

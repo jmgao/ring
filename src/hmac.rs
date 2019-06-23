@@ -111,7 +111,7 @@
 //! [code for `ring::hkdf`]:
 //!     https://github.com/briansmith/ring/blob/master/src/hkdf.rs
 
-use crate::{constant_time, digest, error, hkdf, rand};
+use crate::{constant_time, digest, error, hkdf};
 
 /// A deprecated alias for `Tag`.
 #[deprecated(note = "`Signature` was renamed to `Tag`. This alias will be removed soon.")]
@@ -171,9 +171,10 @@ impl Key {
     ///
     /// The key will be `digest_alg.output_len` bytes long, based on the
     /// recommendation in https://tools.ietf.org/html/rfc2104#section-3.
+    #[cfg(feature = "rand")]
     pub fn generate(
         digest_alg: &'static digest::Algorithm,
-        rng: &dyn rand::SecureRandom,
+        rng: &dyn crate::rand::SecureRandom,
     ) -> Result<Self, error::Unspecified> {
         let mut key_bytes = [0; digest::MAX_OUTPUT_LEN];
         let key_bytes = &mut key_bytes[..digest_alg.output_len];
@@ -319,13 +320,14 @@ pub fn verify(key: &Key, data: &[u8], tag: &[u8]) -> Result<(), error::Unspecifi
 
 #[cfg(test)]
 mod tests {
-    use crate::{digest, hmac, rand};
+    use crate::{digest, hmac};
 
     // Make sure that `Key::generate` and `verify_with_own_key` aren't
     // completely wacky.
     #[test]
+    #[cfg(feature = "rand")]
     pub fn hmac_signing_key_coverage() {
-        let mut rng = rand::SystemRandom::new();
+        let mut rng = crate::rand::SystemRandom::new();
 
         const HELLO_WORLD_GOOD: &[u8] = b"hello, world";
         const HELLO_WORLD_BAD: &[u8] = b"hello, worle";

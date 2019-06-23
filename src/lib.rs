@@ -59,6 +59,7 @@
     unused_results,
     warnings
 )]
+#![allow(dead_code)]
 #![no_std]
 #![cfg_attr(feature = "internal_benches", allow(unstable_features), feature(test))]
 
@@ -100,6 +101,8 @@ pub mod hmac;
 mod limb;
 pub mod pbkdf2;
 pub mod pkcs8;
+
+#[cfg(feature = "rand")]
 pub mod rand;
 
 #[cfg(feature = "use_heap")]

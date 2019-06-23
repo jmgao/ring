@@ -12,7 +12,7 @@
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-use crate::{error, rand};
+use crate::error;
 
 pub use self::keys::{KeyPair, PublicKey, Seed};
 
@@ -25,8 +25,9 @@ pub struct Curve {
     // Precondition: `bytes` is the correct length.
     check_private_key_bytes: fn(bytes: &[u8]) -> Result<(), error::Unspecified>,
 
+    #[cfg(feature = "rand")]
     generate_private_key:
-        fn(rng: &dyn rand::SecureRandom, &mut [u8]) -> Result<(), error::Unspecified>,
+        fn(rng: &dyn crate::rand::SecureRandom, &mut [u8]) -> Result<(), error::Unspecified>,
 
     public_from_private:
         fn(public_out: &mut [u8], private_key: &Seed) -> Result<(), error::Unspecified>,

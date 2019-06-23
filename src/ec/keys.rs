@@ -1,5 +1,5 @@
 use super::{Curve, ELEM_MAX_BYTES, SEED_MAX_BYTES};
-use crate::{cpu, error, rand};
+use crate::{cpu, error};
 
 pub struct KeyPair {
     seed: Seed,
@@ -27,9 +27,10 @@ pub struct Seed {
 }
 
 impl Seed {
+    #[cfg(feature = "rand")]
     pub(crate) fn generate(
         curve: &'static Curve,
-        rng: &dyn rand::SecureRandom,
+        rng: &dyn crate::rand::SecureRandom,
         cpu_features: cpu::Features,
     ) -> Result<Self, error::Unspecified> {
         let mut r = Self {

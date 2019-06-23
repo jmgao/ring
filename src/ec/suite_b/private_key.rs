@@ -20,14 +20,14 @@ use crate::{
     arithmetic::montgomery::R,
     ec, error,
     limb::{self, LIMB_BYTES},
-    rand,
 };
 use untrusted;
 
 /// Generates a random scalar in the range [1, n).
+#[cfg(feature = "rand")]
 pub fn random_scalar(
     ops: &PrivateKeyOps,
-    rng: &dyn rand::SecureRandom,
+    rng: &dyn crate::rand::SecureRandom,
 ) -> Result<Scalar, error::Unspecified> {
     let num_limbs = ops.common.num_limbs;
     let mut bytes = [0; ec::SCALAR_MAX_BYTES];
@@ -36,9 +36,10 @@ pub fn random_scalar(
     scalar_from_big_endian_bytes(ops, bytes)
 }
 
+#[cfg(feature = "rand")]
 pub fn generate_private_scalar_bytes(
     ops: &PrivateKeyOps,
-    rng: &dyn rand::SecureRandom,
+    rng: &dyn crate::rand::SecureRandom,
     out: &mut [u8],
 ) -> Result<(), error::Unspecified> {
     // [NSA Suite B Implementer's Guide to ECDSA] Appendix A.1.2, and

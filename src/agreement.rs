@@ -62,7 +62,8 @@
 // The "NSA Guide" steps here are from from section 3.1, "Ephemeral Unified
 // Model."
 
-use crate::{cpu, ec, error, rand};
+use crate::{ec, error};
+
 use untrusted;
 
 pub use crate::ec::{
@@ -99,11 +100,12 @@ pub struct EphemeralPrivateKey {
 
 impl EphemeralPrivateKey {
     /// Generate a new ephemeral private key for the given algorithm.
+    #[cfg(feature = "rand")]
     pub fn generate(
         alg: &'static Algorithm,
-        rng: &dyn rand::SecureRandom,
+        rng: &dyn crate::rand::SecureRandom,
     ) -> Result<Self, error::Unspecified> {
-        let cpu_features = cpu::features();
+        let cpu_features = crate::cpu::features();
 
         // NSA Guide Step 1.
         //
