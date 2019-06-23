@@ -414,3 +414,8 @@ mod fuchsia {
         fn zx_cprng_draw(buffer: *mut u8, length: usize);
     }
 }
+
+#[cfg(target_os = "none")]
+fn fill_impl(_dest: &mut [u8]) -> Result<(), error::Unspecified> {
+  Ok(())
+}

@@ -30,7 +30,6 @@
     unused_qualifications,
     unused_results,
     variant_size_differences,
-    warnings
 )]
 
 // In the `pregenerate_asm_main()` case we don't want to access (Cargo)
@@ -91,17 +90,7 @@ const RING_SRCS: &[(&[&str], &str)] = &[
     (&[X86_64], "crypto/poly1305/asm/poly1305-x86_64.pl"),
     (&[X86_64], SHA512_X86_64),
 
-    (&[AARCH64, ARM], "crypto/fipsmodule/aes/asm/aesv8-armx.pl"),
-    (&[AARCH64, ARM], "crypto/fipsmodule/modes/asm/ghashv8-armx.pl"),
-
-    (&[ARM], "crypto/fipsmodule/aes/asm/aes-armv4.pl"),
-    (&[ARM], "crypto/fipsmodule/aes/asm/bsaes-armv7.pl"),
     (&[ARM], "crypto/fipsmodule/bn/asm/armv4-mont.pl"),
-    (&[ARM], "crypto/chacha/asm/chacha-armv4.pl"),
-    (&[ARM], "crypto/curve25519/asm/x25519-asm-arm.S"),
-    (&[ARM], "crypto/fipsmodule/ec/asm/ecp_nistz256-armv4.pl"),
-    (&[ARM], "crypto/fipsmodule/modes/asm/ghash-armv4.pl"),
-    (&[ARM], "crypto/poly1305/asm/poly1305-armv4.pl"),
     (&[ARM], "crypto/fipsmodule/sha/asm/sha256-armv4.pl"),
     (&[ARM], "crypto/fipsmodule/sha/asm/sha512-armv4.pl"),
 
@@ -291,7 +280,7 @@ fn ring_build_rs_main() {
     let pregenerated = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join(PREGENERATED);
 
     build_c_code(&target, pregenerated, &out_dir);
-    check_all_files_tracked()
+//  check_all_files_tracked()
 }
 
 fn pregenerate_asm_main() {
@@ -383,7 +372,7 @@ fn build_c_code(target: &Target, pregenerated: PathBuf, out_dir: &Path) {
     let is_git = std::fs::metadata(".git").is_ok();
 
     let use_pregenerated = !is_git;
-    let warnings_are_errors = is_git;
+    let warnings_are_errors = false;
 
     let asm_dir = if use_pregenerated {
         &pregenerated

@@ -36,6 +36,7 @@
 
 #![doc(html_root_url = "https://briansmith.org/rustdoc/")]
 #![allow(
+    dead_code,
     missing_copy_implementations,
     missing_debug_implementations,
     non_camel_case_types,
@@ -53,7 +54,6 @@
 #![forbid(
     anonymous_parameters,
     trivial_casts,
-    trivial_numeric_casts,
     unused_extern_crates,
     unused_import_braces,
     unused_results,

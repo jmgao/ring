@@ -198,7 +198,7 @@ pub(crate) mod arm {
                 return self.mask == self.mask & unsafe { GFp_armcap_P };
             }
 
-            #[cfg(not(any(target_arch = "arm", target_arch = "aarch64")))]
+            #[allow(unreachable_code)]
             {
                 return false;
             }

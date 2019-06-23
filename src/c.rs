@@ -17,10 +17,22 @@
 //! The libc crate provide the C types for most, but not all, targets that
 //! *ring* supports.
 
-#[cfg(not(all(target_arch = "wasm32", target_env = "",)))]
+#[cfg(
+    not(
+      any(
+        all(target_arch = "wasm32", target_env = ""),
+        target_os = "none"
+      )
+    )
+)]
 use ::libc;
 
-#[cfg(all(target_arch = "wasm32", target_env = ""))]
+#[cfg(
+    any(
+      all(target_arch = "wasm32", target_env = ""),
+      target_os = "none"
+    )
+)]
 mod libc {
     //! The WASM32 ABI is described at
     //! https://github.com/WebAssembly/tool-conventions/blob/master/BasicCABI.md#data-representation
