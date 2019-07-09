@@ -841,10 +841,15 @@ pub fn elem_exp_consttime<M>(
 
     const WINDOW_BITS: usize = 5;
     const TABLE_ENTRIES: usize = 1 << WINDOW_BITS;
+    const MAX_LIMBS: usize = 32;
 
     let num_limbs = m.limbs.len();
+    if num_limbs > MAX_LIMBS {
+      panic!("too many limbs: {}", num_limbs);
+    }
 
-    let mut table = vec![0; TABLE_ENTRIES * num_limbs];
+    let mut table_buf = [0; TABLE_ENTRIES * MAX_LIMBS];
+    let mut table = &mut table_buf[..TABLE_ENTRIES * num_limbs];
 
     fn gather<M>(table: &[Limb], i: Window, r: &mut Elem<M, R>) {
         extern "C" {
