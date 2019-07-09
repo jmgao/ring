@@ -121,7 +121,7 @@ use crate::bits;
 
 use crate::{digest, error};
 
-use std::{format, string::String, vec::Vec};
+use alloc::{format, string::String, vec::Vec};
 use std::{panic, println};
 
 /// `compile_time_assert_clone::<T>();` fails to compile if `T` doesn't

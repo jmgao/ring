@@ -63,12 +63,15 @@
 #![cfg_attr(feature = "internal_benches", allow(unstable_features), feature(test))]
 
 #[cfg(any(test, feature = "use_heap"))]
+extern crate alloc;
+
+#[cfg(any(test, feature = "use_std"))]
 extern crate std;
 
 #[macro_use]
 mod debug;
 
-#[cfg(any(test, feature = "use_heap"))]
+#[cfg(any(test, feature = "use_std"))]
 #[macro_use]
 pub mod test;
 

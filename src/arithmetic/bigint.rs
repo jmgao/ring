@@ -47,7 +47,7 @@ use core::{
     marker::PhantomData,
     ops::{Deref, DerefMut},
 };
-use std::{borrow::ToOwned as _, boxed::Box, vec, vec::Vec};
+use alloc::{borrow::ToOwned as _, boxed::Box, vec, vec::Vec};
 use untrusted;
 
 pub unsafe trait Prime {}
