@@ -123,7 +123,7 @@ GFp_bn_mul_mont:
 .Lbn_mul_mont:
 	ldr	ip,[sp,#4]		@ load num
 	stmdb	sp!,{r0,r2}		@ sp points at argument block
-#if __ARM_MAX_ARCH__>=7
+#if __ARM_MAX_ARCH__>=7 && 0
 	tst	ip,#7
 	bne	.Lialu
 	adr	r0,.Lbn_mul_mont
@@ -305,7 +305,7 @@ my ($rptr,$aptr,$bptr,$nptr,$n0,$num)=map("r$_",(0..5));
 my ($tinptr,$toutptr,$inner,$outer,$bnptr)=map("r$_",(6..11));
 
 $code.=<<___;
-#if __ARM_MAX_ARCH__>=7
+#if __ARM_MAX_ARCH__>=7 && 0
 .arch	armv7-a
 .fpu	neon
 

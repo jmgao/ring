@@ -230,7 +230,7 @@ GFp_sha256_block_data_order:
 #else
 	adr	r3,.Lsha256_block_data_order
 #endif
-#if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
+#if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__) && 0
 	ldr	r12,.LOPENSSL_armcap
 	ldr	r12,[r3,r12]		@ GFp_armcap_P
 #ifdef	__APPLE__
@@ -474,7 +474,7 @@ sub body_00_15 () {
 }
 
 $code.=<<___;
-#if __ARM_MAX_ARCH__>=7
+#if __ARM_MAX_ARCH__>=7 && 0
 .arch	armv7-a
 .fpu	neon
 
@@ -604,7 +604,7 @@ my ($W0,$W1,$ABCD_SAVE,$EFGH_SAVE)=map("q$_",(12..15));
 my $Ktbl="r3";
 
 $code.=<<___;
-#if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__)
+#if __ARM_MAX_ARCH__>=7 && !defined(__KERNEL__) && 0
 
 # if defined(__thumb2__)
 #  define INST(a,b,c,d)	.byte	c,d|0xc,a,b
